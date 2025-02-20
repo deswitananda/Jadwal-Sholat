@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jadwal Sholat & Imsakiyah</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+       
+        body {
+          background-color: #f8f9fa;
+        }
+        .header-section {
+          background-color: #4CAF50 !important;
+          color: white;
+          padding: 15px 0;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .table-container {
+          border-radius: 10px;
+          overflow-x: auto;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+          -webkit-overflow-scrolling: touch;
+            margin-top: 20px;
+        }
+        .table-container {
+            overflow-x: auto;
+            
+        }
+        .table {
+          border-collapse: collapse;
+          background-color: white;
+          width: 100%;
+          margin-top: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .table-header th {
+          background-color: #4CAF50 !important;
+          color: white;
+          font-weight: bold;
+          text-transform: uppercase;
+          font-size: 16px;
+          padding: 12px;
+          position: sticky;
+          top: 0;
+          z-index: 10;
+        }
+        .table tbody td:nth-child(odd) {
+          background-color: #e8f5e9;
+        }
+        .table tbody td:nth-child(even) {
+          background-color: #f1f8e9;
+        }
+        .table tbody tr:hover td {
+          background-color: #c8e6c9 !important;
+        }
+        .table-responsive {
+          max-height: 80vh;
+          overflow-y: auto;
+          position: relative;
+          -webkit-overflow-scrolling: touch;
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+
+        }
+        .table-responsive::-webkit-scrollbar {
+            display: none; 
+        }
+        .table td, .table th {
+          padding: 12px;
+          border: 1px solid #ddd;
+        }
+          
+        .highlight-today td, .dark-mode .highlight-today td {
+          background-color: #B3D8A8 !important;
+          color: black !important;
+          font-weight: bold;
+          border-radius: 5px;
+        }
+       
+        .custom-select-city {
+          max-width: 400px;
+          width: 100%;
+          margin: 0 auto;
+        }
+        @media (max-width: 576px) {
+          .custom-select-city {
+            max-width: 100%;
+          }
+        }
+        .select2-container--default .select2-selection--single {
+          height: 38px !important;
+          display: flex;
+          align-items: center;
+          padding-left: 10px;
+          padding-right: 30px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+          line-height: 38px !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__clear {
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 18px;
+          color: #999;
+          cursor: pointer;
+        }
+
+/* === MODE GELAP (LEBIH SOFT) === */
+.dark-mode {
+    background-color: #181a1e; /* Abu-abu gelap, bukan hitam pekat */
+    color: #e0e0e0; /* Teks sedikit lebih terang */
+}
+
+.dark-mode .header-section {
+    background-color: #23272e !important;
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.05);
+}
+
+/* Header tabel lebih terang */
+.dark-mode .table-header th {
+    background-color: #343944 !important; /* Abu-abu lebih terang */
+    color: white;
+    border-color: #444;
+}
+
+/* Isi tabel lebih soft */
+.dark-mode .table tbody td {
+    background-color: #24272e !important; /* Sedikit lebih terang dari background utama */
+    color: #e0e0e0 !important;
+}
+
+/* Baris ganjil & genap lebih lembut */
+.dark-mode .table tbody td:nth-child(odd) {
+    background-color: #2b2e35 !important;
+}
+
+.dark-mode .table tbody td:nth-child(even) {
+    background-color: #32363e !important;
+}
+
+/* Hover efek lebih subtle */
+.dark-mode .table tbody tr:hover td {
+    background-color: #414652 !important;
+}
+
+
+
+
+/* Select Dropdown */
+.dark-mode .form-select, 
+.dark-mode .select2-container--default .select2-selection--single {
+    background-color: #23272e;
+    color: white;
+    border-color: #555;
+}
+
+.dark-mode .select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: white !important;
+}
+
+.dark-mode .select2-dropdown {
+  background-color: #23272e !important;
+  color: white !important;
+  border-color: #555 !important;
+}
+
+.dark-mode .select2-results__option {
+  background-color: #23272e !important;
+  color: white !important;
+}
+
+.dark-mode .select2-results__option--highlighted {
+  background-color: #4CAF50 !important;
+  color: black !important;
+}
+
+
+
+
+
+    </style>
+</head>
+
+<body>
+    <header class="header-section text-center">
+      <h1>Jadwal Sholat & Imsakiyah</h1>
+      <h2 id="pageTitle">Medan</h2>
+    </header>
+  
+    <div class="container mt-4">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="card shadow-sm p-3 border-0">
+              <label for="yearSelect" class="form-label fw-bold">
+                <i class="fa-solid fa-calendar"></i> Pilih Tahun:
+              </label>
+              <select id="yearSelect" class="form-select"></select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card shadow-sm p-3 border-0">
+              <label for="monthSelect" class="form-label fw-bold">
+                <i class="fa-solid fa-calendar-days"></i> Pilih Bulan:
+              </label>
+              <select id="monthSelect" class="form-select"></select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card shadow-sm p-3 border-0">
+              <label for="citySelect" class="form-label fw-bold">
+                <i class="fa-solid fa-map-marker-alt"></i> Pilih Kab/Kota:
+              </label>
+              <select id="citySelect" class="form-select select2"></select>
+            </div>
+          </div>
+        </div>
+      
+        <p id="selectedInfo" class="text-center fw-bold mt-4">
+          Jadwal Sholat untuk <span id="selectedCity">Medan</span> - <span id="selectedMonth">Februari</span> <span id="selectedYear">2025</span> dan Sekitarnya
+        </p>
+      </div>
+      
+  
+    <div class="container mt-3">
+      <div id="loadingIndicator" class="text-center" style="display: none;">
+        <div class="spinner-border text-success" role="status"></div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered text-center">
+          <thead class="table-header">
+            <tr>
+              <th>Tanggal</th>
+              <th>Imsak</th>
+              <th>Subuh</th>
+              <th>Terbit</th>
+              <th>Dhuha</th>
+              <th>Dzuhur</th>
+              <th>Ashar</th>
+              <th>Maghrib</th>
+              <th>Isya</th>
+            </tr>
+          </thead>
+          <tbody id="scheduleContainer"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+      async function getUserLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            function(position) {
+                console.log("Latitude: " + position.coords.latitude);
+                console.log("Longitude: " + position.coords.longitude);
+            },
+            function(error) {
+                console.error("Error mendapatkan lokasi:", error);
+            }
+        );
+        
+        } else {
+            console.error("Geolocation tidak didukung di browser ini.");
+            useLastOrDefaultCity();
+        }
+    }
+    
+    async function getCityByCoordinates(lat, lon) {
+      try {
+          let response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+          let result = await response.json();
+          
+          if (result.address && result.address.city) {
+              console.log("Kota ditemukan:", result.address.city);
+              return result.address.city; // Mengembalikan nama kota
+          } else if (result.address && result.address.town) {
+              console.log("Kota ditemukan:", result.address.town);
+              return result.address.town; // Jika bukan city, coba town
+          } else {
+              console.log("Tidak dapat menemukan kota berdasarkan koordinat.");
+              return null;
+          }
+      } catch (error) {
+          console.error("Error fetching city by coordinates:", error);
+          return null;
+      }
+  }
+  
+  // Contoh penggunaan
+  getCityByCoordinates(3.60448, 98.6939392).then(city => console.log("Nama kota:", city));
+  
+    
+    function useLastOrDefaultCity() {
+        const lastCity = localStorage.getItem("selectedCity");
+        if (lastCity) {
+            $("#citySelect").val(lastCity).trigger("change");
+        } else {
+            $("#citySelect").val("0228").trigger("change"); // Default ke Medan
+        }
+        handleSelectionChange();
+    }
+    
+    // Panggil saat halaman dimuat
+    $(document).ready(async function () {
+        await getUserLocation();
+    });
+    
+        
+      $(document).ready(async function () {
+          const today = new Date();
+          const currentYear = today.getFullYear();
+          const currentMonth = (today.getMonth() + 1).toString().padStart(2, '0');
+    
+          initializeYearSelect(currentYear);
+          initializeMonthSelect();
+          await loadCities();
+    
+          $("#yearSelect").val(currentYear);
+          $("#monthSelect").val(currentMonth);
+          $("#citySelect").val("0228"); // Default ke Medan
+          handleSelectionChange();
+    
+          $("#citySelect").select2({ placeholder: "Pilih Kota", allowClear: true });
+          $("#yearSelect, #monthSelect, #citySelect").change(handleSelectionChange);
+      });
+      
+      function initializeYearSelect(startYear) {
+          for (let year = startYear; year <= startYear + 5; year++) {
+              $("#yearSelect").append(`<option value="${year}">${year}</option>`);
+          }
+      }
+      
+      function initializeMonthSelect() {
+          const months = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
+          months.forEach((name, index) => {
+              $("#monthSelect").append(`<option value="${(index + 1).toString().padStart(2, '0')}">${name}</option>`);
+          });
+      }
+      
+      async function loadCities() {
+        const cacheKey = "cachedCities";
+        const cachedData = localStorage.getItem(cacheKey);
+        
+        if (cachedData) {
+            const data = JSON.parse(cachedData);
+            populateCitySelect(data);
+            return;
+        }
+    
+        try {
+            const response = await fetch("https://api.myquran.com/v2/sholat/kota/semua");
+            const data = await response.json();
+            localStorage.setItem(cacheKey, JSON.stringify(data.data));
+            populateCitySelect(data.data);
+        } catch (error) {
+            console.error("Gagal mengambil data kota:", error);
+        }
+    }
+    
+    function populateCitySelect(data) {
+        data.forEach(city => {
+            $("#citySelect").append(`<option value="${city.id}">${city.lokasi}</option>`);
+        });
+    }
+    
+      
+      async function handleSelectionChange() {
+        const year = $("#yearSelect").val();
+        const month = $("#monthSelect").val();
+        const cityId = $("#citySelect").val();
+        const cityName = $("#citySelect option:selected").text();
+        
+        const monthNames = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
+        const monthIndex = parseInt(month, 10) - 1;
+        const monthName = monthNames[monthIndex] || month;
+        
+        $("#pageTitle").text(cityName);
+        $("#selectedInfo").text(`Jadwal Sholat untuk ${cityName} - ${monthName} ${year} dan Sekitarnya`);
+    
+        if (year && month && cityId) {
+            $("#loadingIndicator").show();
+            try {
+                await fetchPrayerTimes(cityId, year, month);
+            } finally {
+                $("#loadingIndicator").hide();
+            }
+        }
+    }
+    
+      
+    async function fetchPrayerTimes(cityId, year, month) {
+        try {
+            $("#loadingIndicator").show();
+            const timestamp = new Date().getTime(); // Tambahkan timestamp untuk menghindari cache
+            const response = await fetch(`https://api.myquran.com/v2/sholat/jadwal/${cityId}/${year}/${month}?t=${timestamp}`);
+            const data = await response.json();
+            if (data.status) displaySchedule(data.data.jadwal);
+        } finally {
+            $("#loadingIndicator").hide();
+        }
+    }
+    
+      
+      function displaySchedule(schedule) {
+          const container = document.getElementById("scheduleContainer");
+          container.innerHTML = "";
+          
+          const today = new Date().getDate(); // Mengambil tanggal hari ini
+          
+          schedule.forEach(day => {
+              const match = day.tanggal.match(/\d+/);
+              const dayNumber = match ? parseInt(match[0]) : NaN;
+              const isToday = dayNumber === today;
+              
+              container.innerHTML += `
+                  <tr class="${isToday ? 'highlight-today' : ''}">
+                      <td>${day.tanggal}</td>
+                      <td>${day.imsak}</td>
+                      <td>${day.subuh}</td>
+                      <td>${day.terbit}</td>
+                      <td>${day.dhuha}</td>
+                      <td>${day.dzuhur}</td>
+                      <td>${day.ashar}</td>
+                      <td>${day.maghrib}</td>
+                      <td>${day.isya}</td>
+                  </tr>`;
+          });
+      }
+
+      function isUsing12HourFormat() {
+        const date = new Date();
+        return date.toLocaleTimeString().toLowerCase().includes("am") || date.toLocaleTimeString().toLowerCase().includes("pm");
+    }
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        function applyDarkMode() {
+            let now = new Date();
+            let hours = now.getHours();
+            let isDarkMode = hours >= 18 || hours < 5; 
+            
+            document.body.classList.toggle("dark-mode", isDarkMode);
+        }
+        
+        applyDarkMode(); 
+        setInterval(applyDarkMode, 1000); // Cek setiap detik agar cepat berubah
+    });
+        
+    </script>
+
+</body>
+</html>
