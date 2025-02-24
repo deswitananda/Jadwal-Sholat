@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al-Qur'an Online</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #1565c0;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+            min-width: 300px;
+            background-color: #e3f2fd;
+            padding: 20px;
+            height: 100vh;
+            color: #0d47a1;
+            box-sizing: border-box;
+            flex-shrink: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            background: linear-gradient(to right, #1565c0, #42a5f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            font-family: 'Georgia', serif;
+            margin-bottom: 20px;
+        }
+
+        .sidebar, .ayat-container {
+            scrollbar-width: thin;
+            scrollbar-color: #42a5f5 #e3f2fd;
+        }
+
+        .sidebar::-webkit-scrollbar, .ayat-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-track, .ayat-container::-webkit-scrollbar-track {
+            background: #e3f2fd;
+            border-radius: 10px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb, .ayat-container::-webkit-scrollbar-thumb {
+            background: #42a5f5;
+            border-radius: 10px;
+        }
+
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .surah-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+            max-height: 80vh;
+        }
+
+        .surah-item {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+            margin-bottom: 10px;
+            color: #333;
+            border: 2px solid #90caf9;
+            box-sizing: border-box;
+        }
+
+        .surah-item:hover {
+            background-color: #bbdefb;
+        }
+
+        .active {
+            background-color: #42a5f5 !important;
+            color: white !important;
+            font-weight: bold;
+        }
+
+        .ayat-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+            max-height: calc(100vh - 200px);
+            position: relative;
+        }
+
+        .ayat {
+            text-align: right;
+            font-size: 26px;
+            font-family: 'Traditional Arabic', 'Amiri', serif;
+            color: #0d47a1;
+            margin-bottom: 10px;
+            direction: rtl;
+        }
+
+        .ayat-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .nomor-ayat {
+            display: inline-block;
+            font-size: 14px;
+            font-family: 'Amiri', serif;
+            color: #0d47a1;
+            border: 1px solid #0d47a1;
+            border-radius: 50%;
+            width: 15px;
+            height: 18px;
+            line-height: 18px;
+            text-align: center;
+            font-weight: bold;
+            margin-left: 6px;
+            vertical-align: middle;
+            background-color: transparent;
+        }
+
+        .bismillah {
+            text-align: center;
+            font-size: 30px;
+            font-family: 'Amiri', serif;
+            color: #0d47a1;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .terjemahan {
+            text-align: left;
+            font-size: 16px;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">Al-Qur'an Online</div>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Daftar Surah</h2>
+            <ul class="surah-list" id="surah-list"></ul>
+        </div>
+        <div class="content">
+            <div class="surah-detail" id="surah-detail"></div>
+            <div class="ayat-container" id="ayat-container"></div>
+        </div>
+    </div>
+
+    <script>
+        async function getSurah() {
+            try {
+                const response = await fetch('https://equran.id/api/v2/surat');
+                if (!response.ok) throw new Error('Gagal mengambil data');
+                const data = await response.json();
+                
+                const surahList = document.getElementById('surah-list');
+                surahList.innerHTML = '';
+
+                data.data.forEach(surah => {
+                    const surahItem = document.createElement('div');
+                    surahItem.classList.add('surah-item');
+                    surahItem.innerHTML = `
+                        <strong>${surah.nomor}. ${surah.namaLatin}</strong>
+                        <div>${surah.arti} - ${surah.jumlahAyat} ayat</div>
+                    `;
+                    surahItem.onclick = () => loadSurah(surah.nomor, surahItem);
+                    surahList.appendChild(surahItem);
+                });
+            } catch (error) {
+                console.error('Gagal mengambil data surah:', error);
+            }
+        }
+
+        function convertToArabicNumber(num) {
+            const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+            return num.toString().split('').map(digit => arabicNumbers[parseInt(digit)]).join('');
+        }
+        
+        async function loadSurah(surahNumber, clickedItem) {
+            try {
+                const response = await fetch(`https://equran.id/api/v2/surat/${surahNumber}`);
+                if (!response.ok) throw new Error('Gagal mengambil data');
+                const data = await response.json();
+                
+                document.querySelectorAll('.surah-item').forEach(item => item.classList.remove('active'));
+                clickedItem.classList.add('active');
+                
+                const surahDetail = document.getElementById('surah-detail');
+                surahDetail.innerHTML = `
+                    <h2>${data.data.namaLatin} - ${data.data.nama}</h2>
+                    <p><strong>Arti:</strong> ${data.data.arti}</p>
+                    <p><strong>Jumlah Ayat:</strong> ${data.data.jumlahAyat}</p>
+                    <p><strong>Tempat Turun:</strong> ${data.data.tempatTurun}</p>
+                `;
+        
+                // Tambahkan elemen audio untuk memutar surah
+                const audioContainer = document.createElement("div");
+                audioContainer.innerHTML = `
+                    <audio id="surah-audio" controls>
+                        <source src="${data.data.audioFull['01']}" type="audio/mpeg">
+                        Browser Anda tidak mendukung elemen audio.
+                    </audio>
+                `;
+        
+                // Sisipkan elemen audio setelah detail surah
+                surahDetail.appendChild(audioContainer);
+                
+                const ayatContainer = document.getElementById('ayat-container');
+                ayatContainer.innerHTML = '';
+        
+                // Tambahkan Bismillah kecuali untuk Surah At-Taubah (9) dan Al-Fatihah (1)
+                if (surahNumber !== 9 && surahNumber !== 1) {
+                    ayatContainer.innerHTML += `
+                        <p class="ayat bismillah">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+                        <hr>
+                    `;
+                }
+        
+                data.data.ayat.forEach(ayat => {
+                    ayatContainer.innerHTML += `
+                    <p class="ayat">
+                        ${ayat.teksArab} 
+                        <span class="nomor-ayat">${convertToArabicNumber(ayat.nomorAyat)}</span>
+                    </p>
+                    <p class="latin">${ayat.teksLatin}</p>
+                    <p class="terjemahan">${ayat.teksIndonesia}</p>
+                    <audio controls>
+                        <source src="${ayat.audio['01']}" type="audio/mpeg">
+                        Browser Anda tidak mendukung elemen audio.
+                    </audio>
+                    <hr>
+                `;
+                
+                });
+            } catch (error) {
+                console.error('Gagal mengambil data ayat:', error);
+            }
+        }
+        
+        
+        window.onload = getSurah;
+    </script>
+</body>
+</html>

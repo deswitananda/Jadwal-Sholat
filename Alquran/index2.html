@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daftar Surah - Al-Qur'an Online</title>
+  <!-- Sertakan Font Awesome untuk ikon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="header">Al-Qur'an Online</div>
+  <div class="container index-container">
+    <div class="sidebar-box">
+      <div class="sidebar-header">
+        <!-- Tombol favorit surah (ikon bookmark) -->
+        <div class="favorite-icon-container">
+          <button id="show-favorites" title="Tampilkan Surah Favorit">
+            <i class="fa-regular fa-bookmark"></i>
+          </button>
+        </div>
+        <!-- Search bar -->
+        <div class="search-container">
+          <input type="text" id="search-surah" placeholder="Cari surah..." class="search-box">
+          <i class="fa-solid fa-search search-icon"></i>
+        </div>
+      </div>
+      <!-- Grid daftar surah (3 kolom) -->
+      <div id="surah-grid" class="surah-grid"></div>
+    </div>
+  </div>
+  
+  <script src="index.js"></script>
+</body>
+</html>
