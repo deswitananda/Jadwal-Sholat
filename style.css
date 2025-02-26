@@ -1,0 +1,262 @@
+/* Overall Background */
+body {
+  background-color: #f9fafc;
+  font-family: 'Open Sans', sans-serif;
+}
+/* Header */
+.header-section {
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  color: #fff;
+  padding: 30px 0;
+  text-align: center;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+.header-section h1 {
+  font-family: 'Lato', sans-serif;
+  font-size: 2.8rem;
+  margin-bottom: 0;
+  text-transform: uppercase;
+}
+/* Info Box */
+.info-box {
+  background-color: #5e9cfb;
+  color: #fff;
+  border: 2px solid #2575fc;
+  border-radius: 12px;
+  padding: 25px;
+  margin-top: 20px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+.info-box p {
+  margin-bottom: 10px;
+}
+/* Custom Dropdown: Label di kiri, select di kanan */
+.custom-select-city {
+  max-width: 400px;
+  margin: 0 auto;
+}
+.custom-select-city .d-flex {
+  justify-content: flex-start;
+  align-items: center;
+}
+.custom-select-city .form-label {
+  margin-right: 10px;
+  font-weight: 500;
+  font-size: 1rem;
+}
+/* Segmented Button Container */
+.btn-group-custom {
+  display: inline-flex;
+  border: 1px solid #ced4da;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+/* Tombol Segmented (Flat) */
+.btn-segment {
+  background-color: #e0e0e0;
+  color: #777;
+  border: none;
+  border-right: 1px solid #ddd;
+  padding: 10px 25px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+.btn-segment:first-child {
+  border-left: 1px solid #ddd;
+}
+.btn-segment:last-child {
+  border-right: 1px solid #ddd;
+}
+.btn-segment:hover:not(.active) {
+  background-color: #d0d0d0;
+}
+.btn-segment.active {
+  background-color: #5e9cfb;
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(94,156,251,0.3);
+}
+/* Table Container */
+.table-container {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 15px;
+  margin-top: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.table-responsive {
+  max-height: 70vh;
+  overflow-y: auto;
+  -ms-overflow-style: none;  /* IE 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+/* Sembunyikan scrollbar untuk browser Webkit (Chrome, Safari, Opera) */
+.table-responsive::-webkit-scrollbar {
+  display: none;
+}
+/* Tabel Header (Flat) */
+.table-header th {
+  background-color: #5e9cfb;
+  color: #fff;
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 14px;
+  padding: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+/* Tabel Body (Flat Colors) */
+.table tbody td {
+  padding: 12px;
+  font-size: 14px;
+  background-color: #fff;
+}
+.table tbody tr:nth-child(even) td {
+  background-color: #f3f5ff;
+}
+.table tbody tr:hover td {
+  background-color: #e2e6ea !important;
+}
+.highlight-today td {
+  background-color: #ffeaa7 !important;
+  color: #000;
+  font-weight: bold;
+  border-radius: 5px;
+}
+.current-prayer {
+  background-color: #ff9f43 !important;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 5px;
+}
+/* Notifikasi Sholat */
+#prayerNotification {
+  font-size: 0.9rem;
+  color: #ffd700;
+  font-weight: 600;
+  margin-top: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+}
+#prayerNotification span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 15s linear infinite;
+}
+@keyframes marquee {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-100%, 0); }
+}
+/* Dark Mode */
+.dark-mode {
+  background-color: #1b1b1b;
+  color: #e8e8e8;
+}
+.dark-mode .header-section {
+  background: linear-gradient(90deg, #000, #333);
+  box-shadow: 0 4px 10px rgba(255,255,255,0.05);
+}
+.dark-mode .table-container {
+  background-color: #2b2b2b;
+  border-color: #444;
+}
+.dark-mode .table {
+  background-color: #2b2b2b;
+  color: #e8e8e8;
+}
+.dark-mode .table-header th {
+  background-color: #333;
+  border-color: #444;
+}
+.dark-mode .table tbody td {
+  border-color: #444;
+}
+.dark-mode .table tbody tr:nth-child(even) td {
+  background-color: #272727;
+}
+.dark-mode .table tbody tr:nth-child(odd) td {
+  background-color: #2b2b2b;
+}
+.dark-mode .table tbody tr:hover td {
+  background-color: #3a3a3a !important;
+}
+.dark-mode .highlight-today td {
+  background-color: #ffc107 !important;
+  color: #000;
+  font-weight: bold;
+  border-radius: 5px;
+}
+.dark-mode .current-prayer {
+  background-color: #ff8a65 !important;
+  color: #000;
+  border-radius: 5px;
+}
+.dark-mode .info-box {
+  background-color: #333;
+  border-color: #666;
+}
+.dark-mode #prayerNotification {
+  color: #ffd700;
+}
+/* Select2 Customization */
+.select2-container--default .select2-selection--single {
+  border: 2px solid #5e9cfb;
+  border-radius: 8px;
+  background-color: #fff;
+  transition: all 0.3s ease;
+  height: 42px !important;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 30px;
+}
+.select2-container--default .select2-selection--single:hover {
+  box-shadow: 0 0 5px rgba(94,156,251,0.3);
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+}
+.select2-container--default .select2-dropdown {
+  border: 2px solid #5e9cfb;
+  border-radius: 8px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  margin-top: 2px;
+}
+.select2-container--default .select2-results__option {
+  padding: 8px 12px;
+  transition: background-color 0.2s ease;
+}
+.select2-container--default .select2-results__option--highlighted {
+  background-color: #5e9cfb !important;
+  color: #fff !important;
+}
+.dark-mode .select2-container--default .select2-selection--single {
+  background-color: #3a3f44;
+  color: #e8e8e8;
+  border-color: #666;
+}
+.dark-mode .select2-container--default .select2-selection--single:hover {
+  box-shadow: 0 0 5px rgba(102,102,102,0.5);
+}
+.dark-mode .select2-container--default .select2-dropdown {
+  background-color: #3a3a3a !important;
+  border-color: #666 !important;
+}
+.dark-mode .select2-container--default .select2-results__option--highlighted {
+  background-color: #666 !important;
+  color: #fff !important;
+}
+/* Card Jadwal Harian */
+#hariScheduleCard {
+  max-width: 500px;
+  margin: 20px auto;
+}
